@@ -10,22 +10,34 @@ up: ## Sobe os containers
 down: ## Mata os conteiners
 	./vendor/bin/sail down --remove-orphans
 
-composer-require: ## adiciona o pacote como dependência do projeto Ex: make composer-require package="laravel/breeze --dev"
+cr: ## executa ./vendor/bin/sail composer require, adiciona o pacote como dependência do projeto Ex: make cr package="laravel/breeze --dev"
 	./vendor/bin/sail composer require $(package)
 
-artisan: ## Instala pacotes Ex: make artisan install=breeze, caso seja make artisan traz somente as informaçòes do comando
+artisan: ## executa ./vendor/bin/sail artisan
+ifeq ($(1),)
+	./vendor/bin/sail artisan
+endif
+
+a-install: ## install="pacote" -> ./vendor/bin/sail artisan pacote:install
 ifneq ($(install),)
 	./vendor/bin/sail artisan $(install):install
 endif
-ifeq ($(1),)
-	./vendor/bin/sail artisan
+
+a-livewire: ## lv="comando" -> ./vendor/bin/sail artisan livewire:comando
+ifneq ($(lv),)
+	./vendor/bin/sail artisan $(lv)
+endif
+
+a-model: ## model="show User" -> ./vendor/bin/sail artisan model:show User
+ifneq ($(model),)
+	./vendor/bin/sail artisan model:$(model)
 endif
 
 npm-install: ## instala dependencias do npm
 	./vendor/bin/sail npm install
 
-npmrundev:
+npmrundev: ## gera arquivos run dev
 	./vendor/bin/sail npm run dev
 
-npmrunbuild:
+npmrunbuild: ## build os arquivos
 	./vendor/bin/sail npm run build
