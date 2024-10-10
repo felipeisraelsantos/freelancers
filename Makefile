@@ -20,3 +20,12 @@ endif
 ifeq ($(1),)
 	./vendor/bin/sail artisan
 endif
+
+npm-install: ## instala dependencias do npm
+	./vendor/bin/sail npm install
+
+npmrundev:
+	./vendor/bin/sail npm run dev
+
+npmrunbuild:
+	./vendor/bin/sail npm run build
